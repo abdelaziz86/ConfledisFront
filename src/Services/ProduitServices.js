@@ -1,10 +1,11 @@
 import axios from "axios";
 
-const API_URL = "http://your-backend-api-url";
+const API_URL = "http://localhost:5000";
 
 const getAllProducts = async () => {
   try {
-    const response = await axios.get(`${API_URL}/products`);
+      const response = await axios.get(`${API_URL}/produit`);
+      console.log("Hii : "+response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -14,7 +15,7 @@ const getAllProducts = async () => {
 
 const addProduct = async (product) => {
   try {
-    await axios.post(`${API_URL}/products`, product);
+    await axios.post(`${API_URL}/produit`, product);
     return "Product added successfully";
   } catch (error) {
     console.log(error);
@@ -24,7 +25,7 @@ const addProduct = async (product) => {
 
 const deleteProduct = async (productId) => {
   try {
-    await axios.delete(`${API_URL}/products/${productId}`);
+    await axios.delete(`${API_URL}/produit/${productId}`);
     return "Product deleted";
   } catch (error) {
     console.log(error);
@@ -34,7 +35,7 @@ const deleteProduct = async (productId) => {
 
 const updateProduct = async (productId, product) => {
   try {
-    await axios.put(`${API_URL}/products/${productId}`, product);
+    await axios.put(`${API_URL}/produit/${productId}`, product);
     return "Product modified done";
   } catch (error) {
     console.log(error);
@@ -44,7 +45,7 @@ const updateProduct = async (productId, product) => {
 
 const getProductById = async (productId) => {
   try {
-    const response = await axios.get(`${API_URL}/products/${productId}`);
+    const response = await axios.get(`${API_URL}/produit/${productId}`);
     return response.data;
   } catch (error) {
     console.log(error);
