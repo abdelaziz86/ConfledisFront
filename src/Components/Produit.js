@@ -97,17 +97,23 @@ function Produit() {
 
   return (
     <div className="container">
-      <div className="my-4">
+      <h1 className="text-center" style={{ margin: "70px" }}>
+        Products
+      </h1>
+      <div className="mb-8">
         <input
+          style={{ width: "300px", float: "right" }}
           type="text"
           className="form-control"
           placeholder="Search by name"
           value={searchTerm}
           onChange={handleSearch}
         />
-      </div>
-      <div className="mb-4">
-        <button className="btn btn-primary" onClick={openAddModal}>
+        <button
+          className="btn btn-primary"
+          onClick={openAddModal}
+          style={{   float: "right" , marginRight: "10px" }}
+        >
           New Product
         </button>
       </div>
@@ -129,6 +135,7 @@ function Produit() {
               <td>
                 <button
                   className="btn btn-primary"
+                  style={{ marginRight: "10px" }}
                   onClick={() => openEditModal(product._id, product)}
                 >
                   Edit
