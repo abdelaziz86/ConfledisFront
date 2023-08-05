@@ -8,7 +8,31 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Modal, Form } from "react-bootstrap";
 
+import io from "socket.io-client";
+
 function Produit() {
+
+  const [socket, setSocket] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  useEffect(() => { 
+    const socket = io("http://localhost:3000");
+    setSocket(socket);
+
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    socket.on("newMessage", (data) => {
+      console.log("Received newMessage event:", data);
+      setMessages((prevMessages) => [...prevMessages, data]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);  
+
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -95,8 +119,33 @@ function Produit() {
     setProductData({ nom: "", prix_unitaire: 0, quantite: 0 });
   };
 
+
+
+
+  const handleSendMessage = () => {
+    if (socket && newMessage.trim() !== "") {
+      socket.emit("newMessage", { message: newMessage });
+      setNewMessage("");
+    }
+  };
+
   return (
     <div className="container">
+      <h1>WebSocket Messages</h1>
+      <div>
+        {messages.map((message, index) => (
+          <div key={index}>{message.message}</div>
+        ))}
+      </div>
+      <div>
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        <button onClick={handleSendMessage}>Send Message</button>
+      </div>
+
       <h1 className="text-center" style={{ margin: "70px" }}>
         Products
       </h1>
@@ -112,7 +161,7 @@ function Produit() {
         <button
           className="btn btn-primary"
           onClick={openAddModal}
-          style={{   float: "right" , marginRight: "10px" }}
+          style={{ float: "right", marginRight: "10px" }}
         >
           New Product
         </button>
